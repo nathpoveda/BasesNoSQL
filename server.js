@@ -9,6 +9,7 @@ const cors = require("cors");
 //aqui hay que colocar las rutas para cada coleccion. 
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const cultivoRoutes = require("./routes/cultivoRoutes");
+const historialAplicacionesRoutes = require("./routes/historialAplicacionesRoutes");
 // 
 const app = express();
 
@@ -26,7 +27,8 @@ mongoose.connect(mongoURi)
 
 //igualmente, hacer esto con cada ruta.
 app.use("/usuarios", usuarioRoutes);
-app.use("/cultivos", cultivoRoutes)
+app.use("/cultivos", cultivoRoutes);
+app.use("/historial-aplicaciones", historialAplicacionesRoutes);
 
 //Iniciar el servidor
 
