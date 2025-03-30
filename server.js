@@ -11,6 +11,7 @@ const usuarioRoutes = require("./routes/usuarioRoutes");
 const cultivoRoutes = require("./routes/cultivoRoutes");
 const historialAplicacionesRoutes = require("./routes/historialAplicacionesRoutes");
 const ordenesRoutes = require("./routes/ordenesRoutes");
+const proveedoresRoutes = require("./routes/proveedoresRoutes");
 // 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/usuarios", usuarioRoutes);
 app.use("/cultivos", cultivoRoutes);
 app.use("/historial-aplicaciones", historialAplicacionesRoutes);
 app.use("/ordenes", ordenesRoutes);
+app.use("/proveedores", proveedoresRoutes);
 
 //Iniciar el servidor
 
