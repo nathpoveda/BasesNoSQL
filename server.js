@@ -10,6 +10,7 @@ const cors = require("cors");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const cultivoRoutes = require("./routes/cultivoRoutes");
 const historialAplicacionesRoutes = require("./routes/historialAplicacionesRoutes");
+const ordenesRoutes = require("./routes/ordenesRoutes");
 // 
 const app = express();
 
@@ -29,6 +30,7 @@ mongoose.connect(mongoURi)
 app.use("/usuarios", usuarioRoutes);
 app.use("/cultivos", cultivoRoutes);
 app.use("/historial-aplicaciones", historialAplicacionesRoutes);
+app.use("/ordenes", ordenesRoutes);
 
 //Iniciar el servidor
 
