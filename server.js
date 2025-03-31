@@ -12,6 +12,9 @@ const cultivoRoutes = require("./routes/cultivoRoutes");
 const historialAplicacionesRoutes = require("./routes/historialAplicacionesRoutes");
 const ordenesRoutes = require("./routes/ordenesRoutes");
 const proveedoresRoutes = require("./routes/proveedoresRoutes");
+const alertaRoutes = require("./routes/alertaRoutes");
+const sensorRoutes = require("./routes/sensorRoutes");
+
 // 
 const app = express();
 
@@ -33,6 +36,8 @@ app.use("/cultivos", cultivoRoutes);
 app.use("/historial-aplicaciones", historialAplicacionesRoutes);
 app.use("/ordenes", ordenesRoutes);
 app.use("/proveedores", proveedoresRoutes);
+app.use("/sensores", sensorRoutes); 
+app.use("/alertas", alertaRoutes);  
 
 //Iniciar el servidor
 
