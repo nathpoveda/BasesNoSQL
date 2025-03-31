@@ -14,6 +14,10 @@ const ordenesRoutes = require("./routes/ordenesRoutes");
 const proveedoresRoutes = require("./routes/proveedoresRoutes");
 const alertaRoutes = require("./routes/alertaRoutes");
 const sensorRoutes = require("./routes/sensorRoutes");
+const RecomendacionRoutes = require("./routes/recomendacionRoutes");
+const prediccionesClimaticasRoutes = require("./routes/prediccionesClimaticasRoutes");
+
+
 
 // 
 const app = express();
@@ -37,7 +41,11 @@ app.use("/historial-aplicaciones", historialAplicacionesRoutes);
 app.use("/ordenes", ordenesRoutes);
 app.use("/proveedores", proveedoresRoutes);
 app.use("/sensores", sensorRoutes); 
-app.use("/alertas", alertaRoutes);  
+app.use("/alertas", alertaRoutes); 
+app.use("/recomendaciones", RecomendacionRoutes);
+app.use("/prediccionesClimaticas", prediccionesClimaticasRoutes);
+
+
 
 //Iniciar el servidor
 
