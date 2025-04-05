@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cultivos - BioAgroTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-leaf me-2"></i>BioAgroTech
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/indexcultivos.html">Gestión de Cultivos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1><i class="fas fa-seedling me-2"></i>Gestión de Cultivos</h1>
+        
+        <!-- Formulario para agregar/editar cultivo -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Agregar/Editar Cultivo</h5>
+            </div>
+            <div class="card-body">
+                <form id="cultivoForm">
+                    <input type="hidden" id="cultivoId">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombreAgricultor" class="form-label"><i class="fas fa-user me-2"></i>Nombre del Agricultor</label>
+                            <input type="text" class="form-control" id="nombreAgricultor" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre" class="form-label"><i class="fas fa-signature me-2"></i>Nombre del Cultivo</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tipoCultivo" class="form-label"><i class="fas fa-tag me-2"></i>Tipo de Cultivo</label>
+                            <input type="text" class="form-control" id="tipoCultivo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ubicacion" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Ubicación</label>
+                            <input type="text" class="form-control" id="ubicacion" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="fechaDeCultivo" class="form-label"><i class="fas fa-calendar-plus me-2"></i>Fecha de Cultivo</label>
+                            <input type="date" class="form-control" id="fechaDeCultivo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="fechaDeCosecha" class="form-label"><i class="fas fa-calendar-check me-2"></i>Fecha de Cosecha</label>
+                            <input type="date" class="form-control" id="fechaDeCosecha" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="estado" class="form-label"><i class="fas fa-chart-line me-2"></i>Estado</label>
+                            <select class="form-select" id="estado" required>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                                <option value="En Cosecha">En Cosecha</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="productoAplicado" class="form-label"><i class="fas fa-spray-can me-2"></i>Producto Aplicado</label>
+                            <input type="text" class="form-control" id="productoAplicado" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" onclick="resetForm()">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla de cultivos -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Lista de Cultivos</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Agricultor</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Ubicación</th>
+                                <th>Estado</th>
+                                <th>Producto</th>
+                                <th>Fecha Cultivo</th>
+                                <th>Fecha Cosecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cultivosTableBody">
+                            <!-- Los datos se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 

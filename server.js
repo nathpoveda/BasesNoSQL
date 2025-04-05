@@ -5,50 +5,70 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 
-//aqui hay que colocar las rutas para cada coleccion. 
-const usuarioRoutes = require("./routes/usuarioRoutes");
-const cultivoRoutes = require("./routes/cultivoRoutes");
-const historialAplicacionesRoutes = require("./routes/historialAplicacionesRoutes");
-const ordenesRoutes = require("./routes/ordenesRoutes");
-const proveedoresRoutes = require("./routes/proveedoresRoutes");
-const alertaRoutes = require("./routes/alertaRoutes");
-const sensorRoutes = require("./routes/sensorRoutes");
-const RecomendacionRoutes = require("./routes/recomendacionRoutes");
-const prediccionesClimaticasRoutes = require("./routes/prediccionesClimaticasRoutes");
-
-
-
-// 
 const app = express();
 
-//Middleware esto es para el req y respon
-app.use(express.json());
+// Configuración básica
 app.use(cors());
+app.use(express.json());
 
-//Obtener el string de conexion env
+// Middleware para logging
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
+// Configuración de archivos estáticos
+const publicPath = path.join(__dirname, 'public');
+console.log('Ruta de archivos estáticos:', publicPath);
+app.use(express.static(publicPath));
+
+// Conexión a MongoDB
 const mongoURi = process.env.MONGO_URI;
-
-//Conectarnos a una base de datos, NOSQL
 mongoose.connect(mongoURi)
-.then( ()=> console.log("Conectado"))
-.catch( err => console.error("Error al conectar:", err));
+    .then(() => console.log("Conectado a MongoDB"))
+    .catch(err => console.error("Error al conectar a MongoDB:", err));
 
-//igualmente, hacer esto con cada ruta.
-app.use("/usuarios", usuarioRoutes);
-app.use("/cultivos", cultivoRoutes);
-app.use("/historial-aplicaciones", historialAplicacionesRoutes);
-app.use("/ordenes", ordenesRoutes);
-app.use("/proveedores", proveedoresRoutes);
-app.use("/sensores", sensorRoutes); 
-app.use("/alertas", alertaRoutes); 
-app.use("/recomendaciones", RecomendacionRoutes);
-app.use("/prediccionesClimaticas", prediccionesClimaticasRoutes);
+// Importar rutas
+const cultivoRoutes = require("./routes/cultivoRoutes");
 
+// Rutas API
+app.use("/api/cultivos", cultivoRoutes);
 
+// Ruta principal
+app.get('/', (req, res) => {
+    console.log('Solicitud recibida en /');
+    res.sendFile(path.join(publicPath, 'index.html'));
+});
+
+// Ruta de prueba
+app.get('/test', (req, res) => {
+    console.log('Solicitud recibida en /test');
+    res.send('¡El servidor está funcionando!');
+});
+
+// Manejo de errores
+app.use((err, req, res, next) => {
+    console.error('Error en el servidor:', err);
+    res.status(500).send('Error interno del servidor');
+});
 
 //Iniciar el servidor
+const PORT = 3000;
+const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log('====================================');
+    console.log('Servidor iniciado correctamente');
+    console.log(`URL: http://localhost:${PORT}`);
+    console.log(`Directorio público: ${publicPath}`);
+    console.log('====================================');
+});
 
-const PORT = process.env.PORT || 6000; //este es el puerto del API no de la base de datos
-app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+// Manejo de errores del servidor
+server.on('error', (error) => {
+    console.error('Error en el servidor:', error);
+    if (error.code === 'EADDRINUSE') {
+        console.error(`El puerto ${PORT} ya está en uso`);
+    }
+});
 
