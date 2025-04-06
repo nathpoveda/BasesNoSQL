@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Proveedor - BioAgroTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-leaf me-2"></i>BioAgroTech
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/indexcultivos.html">Gestión de Cultivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/indexproveedores.html">Gestión de Proveedores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1><i class="fas fa-edit me-2"></i>Editar Proveedor</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <form id="editarProveedorForm">
+                    <input type="hidden" id="proveedorId">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre" class="form-label"><i class="fas fa-user me-2"></i>Nombre del Proveedor</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="numero" class="form-label"><i class="fas fa-phone me-2"></i>Número de Contacto</label>
+                            <input type="text" class="form-control" id="numero" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="correo" class="form-label"><i class="fas fa-envelope me-2"></i>Correo Electrónico</label>
+                            <input type="email" class="form-control" id="correo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="fabricante" class="form-label"><i class="fas fa-industry me-2"></i>Fabricante</label>
+                            <input type="text" class="form-control" id="fabricante" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tipoProducto" class="form-label"><i class="fas fa-box me-2"></i>Tipo de Producto</label>
+                            <input type="text" class="form-control" id="tipoProducto" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="direccion" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Dirección</label>
+                            <input type="text" class="form-control" id="direccion" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="fechaSuministro" class="form-label"><i class="fas fa-calendar-alt me-2"></i>Fecha de Suministro</label>
+                            <input type="date" class="form-control" id="fechaSuministro" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="calificacion" class="form-label"><i class="fas fa-star me-2"></i>Calificación</label>
+                            <select class="form-select" id="calificacion" required>
+                                <option value="1">1 - Muy Malo</option>
+                                <option value="2">2 - Malo</option>
+                                <option value="3">3 - Regular</option>
+                                <option value="4">4 - Bueno</option>
+                                <option value="5">5 - Excelente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cantidadSuministrada" class="form-label"><i class="fas fa-boxes me-2"></i>Cantidad Suministrada</label>
+                            <input type="number" class="form-control" id="cantidadSuministrada" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a href="/indexproveedores.html" class="btn btn-secondary me-2">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="editarproveedores.js"></script>
+</body>
+</html> 

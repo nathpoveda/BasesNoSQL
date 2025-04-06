@@ -32,9 +32,13 @@ mongoose.connect(mongoURi)
 
 // Importar rutas
 const cultivoRoutes = require("./routes/cultivoRoutes");
+const proveedoresRoutes = require("./routes/proveedoresRoutes");
+const recomendacionRoutes = require("./routes/recomendacionRoutes");
 
 // Rutas API
 app.use("/api/cultivos", cultivoRoutes);
+app.use("/api/proveedores", proveedoresRoutes);
+app.use("/api/recomendaciones", recomendacionRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {

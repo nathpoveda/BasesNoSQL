@@ -12,6 +12,7 @@ const crearRecomendacion = async (req, res) => {
         });
     }
 };
+
 // get
 const obtenerRecomendaciones = async (req, res) => {
     try {
@@ -20,6 +21,23 @@ const obtenerRecomendaciones = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             error: "Error al ver las recomendaciones."
+        });
+    }
+};
+
+// get por id
+const obtenerRecomendacionPorId = async (req, res) => {
+    try {
+        const _datos = await modeloRecomendacion.findById(req.params.id);
+        if (!_datos) {
+            return res.status(404).json({
+                error: "Recomendación no encontrada."
+            });
+        }
+        res.status(200).json(_datos);
+    } catch (error) {
+        res.status(500).json({
+            error: "Error al obtener la recomendación."
         });
     }
 };
@@ -51,6 +69,7 @@ const eliminarRecomendacion = async (req, res) => {
 module.exports = {
     crearRecomendacion,
     obtenerRecomendaciones,
+    obtenerRecomendacionPorId,
     actualizarRecomendacion,
     eliminarRecomendacion
 };

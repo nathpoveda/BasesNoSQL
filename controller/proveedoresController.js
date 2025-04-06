@@ -26,11 +26,37 @@ exports.getProveedorById = async (req, res) => {
 // Crear un nuevo proveedor
 exports.createProveedor = async (req, res) => {
     try {
-        const proveedor = new Proveedores(req.body);
+        console.log('Datos recibidos:', req.body);
+        
+        // Verificar si los datos están llegando correctamente
+        if (!req.body) {
+            throw new Error('No se recibieron datos en el cuerpo de la solicitud');
+        }
+
+        // Procesar la fecha
+        const datosProcesados = {
+            ...req.body,
+            fechaSuministro: req.body.fechaSuministro ? new Date(req.body.fechaSuministro) : null
+        };
+
+        console.log('Datos procesados:', datosProcesados);
+
+        const proveedor = new Proveedores(datosProcesados);
+        console.log('Modelo creado:', proveedor);
+
         const nuevoProveedor = await proveedor.save();
+        console.log('Proveedor guardado exitosamente');
+        
         res.status(201).json(nuevoProveedor);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Error al crear proveedor:', error);
+        console.error('Detalles del error:', error.errInfo);
+        console.error('Stack trace:', error.stack);
+        res.status(400).json({ 
+            message: 'Error al crear el proveedor',
+            error: error.message,
+            details: error.errInfo
+        });
     }
 };
 
