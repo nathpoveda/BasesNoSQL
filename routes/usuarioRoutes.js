@@ -4,7 +4,11 @@ const router = express.Router();
 
 const usuarioController = require('../controller/usuarioController');
 
-router.post("/",usuarioController.crearUsuario);
+// Rutas de autenticación
+router.post("/login", usuarioController.loginUsuario);
+
+// Rutas CRUD
+router.post("/", usuarioController.crearUsuario);
 router.get("/", usuarioController.obtenerUsuarios);
 router.put("/:id", usuarioController.actualizarUsuarios);
 router.delete("/:id", usuarioController.eliminarUsuarios);
