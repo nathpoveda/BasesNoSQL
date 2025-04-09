@@ -23,7 +23,7 @@
                         <a class="nav-link" href="/">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/indexcultivos.html">Gestión de Cultivos</a>
+                        <a class="nav-link" href="/indexcultivos.html">Gestión de Cultivos</a>
                     </li>
                 </ul>
             </div>
@@ -33,10 +33,13 @@
     <div class="container mt-4">
         <h1><i class="fas fa-edit me-2"></i>Editar Cultivo</h1>
         
-        <div class="card">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Modificar datos del cultivo</h5>
+            </div>
             <div class="card-body">
-                <form id="editarCultivoForm">
-                    <input type="hidden" id="cultivoId">
+                <form id="editCultivoForm">
+                    <!-- Los campos se llenarán dinámicamente -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="nombreAgricultor" class="form-label"><i class="fas fa-user me-2"></i>Nombre del Agricultor</label>
@@ -60,33 +63,43 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="fechaDeCultivo" class="form-label"><i class="fas fa-calendar-plus me-2"></i>Fecha de Cultivo</label>
-                            <input type="date" class="form-control" id="fechaDeCultivo" required>
+                            <input type="date" class="form-control" id="fechaDeCultivo">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="fechaDeCosecha" class="form-label"><i class="fas fa-calendar-check me-2"></i>Fecha de Cosecha</label>
-                            <input type="date" class="form-control" id="fechaDeCosecha" required>
+                            <input type="date" class="form-control" id="fechaDeCosecha">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="estado" class="form-label"><i class="fas fa-chart-line me-2"></i>Estado</label>
-                            <select class="form-select" id="estado" required>
-                                <option value="Activo">Activo</option>
-                                <option value="Inactivo">Inactivo</option>
-                                <option value="En Cosecha">En Cosecha</option>
-                            </select>
-                        </div>
+                     <div class="row">
+                         <div class="col-md-6 mb-3">
+                             <label for="estado" class="form-label"><i class="fas fa-chart-line me-2"></i>Estado</label>
+                             <select class="form-select" id="estado" required>
+                                 <option value="Activo">Activo</option>
+                                 <option value="Inactivo">Inactivo</option>
+                                 <option value="En Cosecha">En Cosecha</option>
+                             </select>
+                         </div>
+                         <div class="col-md-6 mb-3">
+                             <label for="cantidad" class="form-label"><i class="fas fa-hashtag me-2"></i>Cantidad</label>
+                             <input type="number" class="form-control" id="cantidad" required min="1">
+                         </div>
+                     </div>
+                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="productoAplicado" class="form-label"><i class="fas fa-spray-can me-2"></i>Producto Aplicado</label>
                             <input type="text" class="form-control" id="productoAplicado" required>
                         </div>
+                        <div class="col-md-6 mb-3">
+                             <label for="descripcion" class="form-label"><i class="fas fa-align-left me-2"></i>Descripción</label>
+                             <textarea class="form-control" id="descripcion" rows="3"></textarea>
+                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
                         <a href="/indexcultivos.html" class="btn btn-secondary me-2">
                             <i class="fas fa-times me-2"></i>Cancelar
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                            <i class="fas fa-save me-2"></i>Actualizar Cultivo
                         </button>
                     </div>
                 </form>

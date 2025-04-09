@@ -1,24 +1,48 @@
 const mongoose = require("mongoose");
 
-// Crear un nuevo esquema con un nombre diferente
-const CultivoNuevoSchema = new mongoose.Schema(
+const CultivoSchema = new mongoose.Schema(
     {
-        nombreAgricultor: String,
-        nombre: String,
-        tipoCultivo: String,
-        ubicacion: String,
-        estado: String,
-        productoAplicado: String,
-        fechaDeCultivo: Date,
-        fechaDeCosecha: Date
+        nombreAgricultor: {
+            type: String,
+            required: true
+        },
+        nombre: {
+            type: String,
+            required: true
+        },
+        tipo: {
+            type: String,
+            required: true
+        },
+        ubicacion: {
+            type: String,
+            required: true
+        },
+        fechaDeCultivo: {
+            type: Date
+        },
+        fechaDeCosecha: {
+            type: Date
+        },
+        estado: {
+            type: String,
+            required: true
+        },
+        cantidad: {
+            type: Number,
+            required: true
+        },
+        productoAplicado: {
+            type: String,
+            required: true
+        },
+        descripcion: {
+            type: String
+        }
     },
     {
-        timestamps: true,
-        collection: 'cultivos_nuevos' // Usar una colección diferente
+        collection: 'cultivos' // Especificamos el nombre exacto de la colección
     }
 );
 
-// Crear el modelo con un nombre diferente
-const CultivoNuevo = mongoose.model("CultivoNuevo", CultivoNuevoSchema);
-
-module.exports = CultivoNuevo;
+module.exports = mongoose.model("Cultivo", CultivoSchema);

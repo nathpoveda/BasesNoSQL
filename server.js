@@ -33,94 +33,103 @@ console.log('Ruta de archivos estáticos:', publicPath);
 app.use(express.static(publicPath));
 
 // Conexión a MongoDB
-const mongoURi = process.env.MONGO_URI;
+const mongoURi = process.env.MONGO_URI || 'mongodb://localhost:27017/Proyecto_Bioagrotech';
 console.log('Intentando conectar a MongoDB con URI:', mongoURi);
 
 mongoose.set('debug', true); // Habilitar el modo debug de Mongoose
 
-mongoose.connect(mongoURi, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(mongoURi)
     .then(() => {
         console.log("====================================");
         console.log("Conectado exitosamente a MongoDB");
-        console.log("Base de datos:", mongoURi.split('/').pop());
+        console.log("Base de datos: Proyecto_Bioagrotech");
         console.log("====================================");
     })
-    .catch(err => {
+    .catch((error) => {
         console.error("====================================");
         console.error("Error al conectar a MongoDB:");
-        console.error("Detalles del error:", err);
-        console.error("URI de conexión:", mongoURi);
+        console.error(error);
         console.error("====================================");
-        process.exit(1);
     });
 
 // Importar rutas
-const cultivoRoutes = require("./routes/cultivoRoutes");
-const proveedoresRoutes = require("./routes/proveedoresRoutes");
-const recomendacionRoutes = require("./routes/recomendacionRoutes");
-const usuarioRoutes = require("./routes/usuarioRoutes");
+const usuarioRoutes = require('./routes/usuarioRoutes');
+const cultivoRoutes = require('./routes/cultivoRoutes');
+const proveedorRoutes = require('./routes/proveedoresRoutes');
+const recomendacionRoutes = require('./routes/recomendacionRoutes');
+const prediccionesClimaticasRoutes = require('./routes/predicciones_climaticas_routes');
+const alertaRoutes = require('./routes/alertaRoutes');
+const historialAplicacionesRoutes = require('./routes/historial_aplicaciones_routes');
+const registroSensoresRoutes = require('./routes/registro_sensores_routes');
+const ordenesRoutes = require('./routes/ordenesRoutes');
 
-// Rutas API
-app.use("/api/cultivos", cultivoRoutes);
-app.use("/api/proveedores", proveedoresRoutes);
-app.use("/api/recomendaciones", recomendacionRoutes);
-app.use("/api/usuarios", usuarioRoutes);
+// Montar rutas
+app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/cultivos', cultivoRoutes);
+app.use('/api/proveedores', proveedorRoutes);
+app.use('/api/recomendaciones', recomendacionRoutes);
+app.use('/api/predicciones_climaticas', prediccionesClimaticasRoutes);
+app.use('/api/alertas', alertaRoutes);
+app.use('/api/historial_aplicaciones', historialAplicacionesRoutes);
+app.use('/api/registro_sensores', registroSensoresRoutes);
+app.use('/api/ordenes', ordenesRoutes);
 
-// Ruta principal y otras rutas HTML
+// Rutas para archivos HTML
 app.get('/', (req, res) => {
-    console.log('Solicitud recibida en /');
+    res.sendFile(path.join(publicPath, 'index.html'));
+});
+
+app.get('/login', (req, res) => {
     res.sendFile(path.join(publicPath, 'login.html'));
 });
 
 app.get('/index.html', (req, res) => {
-    console.log('Solicitud recibida en /index.html');
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.get('/login.html', (req, res) => {
-    console.log('Solicitud recibida en /login.html');
     res.sendFile(path.join(publicPath, 'login.html'));
 });
 
-// Ruta de prueba
-app.get('/test', (req, res) => {
-    console.log('Solicitud recibida en /test');
-    res.send('¡El servidor está funcionando!');
-});
-
-// Manejo de errores mejorado
+// Middleware de manejo de errores
 app.use((err, req, res, next) => {
-    console.error("====================================");
-    console.error("Error en el servidor:");
-    console.error("Mensaje:", err.message);
-    console.error("Stack:", err.stack);
-    console.error("====================================");
-    
+    console.error('====================================');
+    console.error('Error del servidor:', err);
+    console.error('Stack:', err.stack);
+    console.error('====================================');
     res.status(500).json({
         error: "Error interno del servidor",
-        message: err.message,
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+        detalles: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
 });
 
-//Iniciar el servidor
-const PORT = process.env.PORT || 6000;
-const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log('====================================');
-    console.log('Servidor iniciado correctamente');
-    console.log(`URL: http://localhost:${PORT}`);
-    console.log(`Directorio público: ${publicPath}`);
-    console.log('====================================');
+// Función para iniciar el servidor
+const startServer = (port) => {
+    return new Promise((resolve, reject) => {
+        const server = app.listen(port)
+            .on('error', (error) => {
+                if (error.code === 'EADDRINUSE') {
+                    console.log(`Puerto ${port} en uso, intentando con puerto ${port + 1}`);
+                    server.close();
+                    startServer(port + 1).then(resolve).catch(reject);
+                } else {
+                    reject(error);
+                }
+            })
+            .on('listening', () => {
+                console.log("====================================");
+                console.log(`Servidor corriendo en puerto ${port}`);
+                console.log("====================================");
+                resolve(server);
+            });
+    });
+};
+
+// Iniciar servidor
+const PORT = process.env.PORT || 3000;
+startServer(PORT).catch(error => {
+    console.error('Error al iniciar el servidor:', error);
+    process.exit(1);
 });
 
-// Manejo de errores del servidor
-server.on('error', (error) => {
-    console.error('Error en el servidor:', error);
-    if (error.code === 'EADDRINUSE') {
-        console.error(`El puerto ${PORT} ya está en uso`);
-    }
-});
 

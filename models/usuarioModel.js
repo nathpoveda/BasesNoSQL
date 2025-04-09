@@ -31,6 +31,9 @@ const UsuarioSchema = new mongoose.Schema(
             type: Date,
             default: Date.now
         }
+    },
+    {
+        collection: 'usuarios'
     }
 );
 

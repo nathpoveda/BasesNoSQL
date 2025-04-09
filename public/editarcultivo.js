@@ -1,60 +1,91 @@
-const API_URL = "http://localhost:3000/api/cultivos";
+// URL base de la API
+const API_URL = 'http://localhost:3000/api/cultivos';
 
-// Obtener el ID del cultivo de la URL
-const urlParams = new URLSearchParams(window.location.search);
-const cultivoId = urlParams.get('id');
+// Elementos del DOM
+const editCultivoForm = document.getElementById('editCultivoForm');
+let cultivoId = null;
 
-// Cargar los datos del cultivo al cargar la página
+// Función para formatear la fecha para el input type="date"
+function formatearFechaParaInput(fechaISO) {
+    if (!fechaISO) return '';
+    try {
+        // Crear un objeto Date a partir de la cadena ISO
+        const fecha = new Date(fechaISO);
+        // Extraer año, mes y día. Asegurarse de que mes y día tengan dos dígitos.
+        const year = fecha.getFullYear();
+        const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const day = fecha.getDate().toString().padStart(2, '0');
+        // Devolver en formato YYYY-MM-DD
+        return `${year}-${month}-${day}`;
+    } catch (error) {
+        console.error('Error al formatear fecha para input:', error);
+        return '';
+    }
+}
+
+
+// Cargar datos del cultivo al iniciar la página
 document.addEventListener('DOMContentLoaded', async () => {
-    if (cultivoId) {
-        try {
-            console.log('Cargando cultivo para edición:', cultivoId);
-            const response = await fetch(`${API_URL}/${cultivoId}`);
-            if (!response.ok) {
-                throw new Error('Error al cargar el cultivo');
-            }
-            const cultivo = await response.json();
-            console.log('Cultivo cargado:', cultivo);
-            
-            // Llenar el formulario con los datos del cultivo
-            document.getElementById('cultivoId').value = cultivo._id;
-            document.getElementById('nombreAgricultor').value = cultivo.nombreAgricultor;
-            document.getElementById('nombre').value = cultivo.nombre;
-            document.getElementById('tipoCultivo').value = cultivo.tipoCultivo;
-            document.getElementById('ubicacion').value = cultivo.ubicacion;
-            document.getElementById('estado').value = cultivo.estado;
-            document.getElementById('productoAplicado').value = cultivo.productoAplicado;
-            
-            // Formatear fechas para el input type="date"
-            if (cultivo.fechaDeCultivo) {
-                document.getElementById('fechaDeCultivo').value = new Date(cultivo.fechaDeCultivo).toISOString().split('T')[0];
-            }
-            if (cultivo.fechaDeCosecha) {
-                document.getElementById('fechaDeCosecha').value = new Date(cultivo.fechaDeCosecha).toISOString().split('T')[0];
-            }
-        } catch (error) {
-            console.error('Error al cargar el cultivo:', error);
-            alert(`Error al cargar el cultivo para edición: ${error.message}`);
+    // Obtener el ID del cultivo de la URL
+    const params = new URLSearchParams(window.location.search);
+    cultivoId = params.get('id');
+
+    if (!cultivoId) {
+        alert('No se proporcionó un ID de cultivo.');
+        window.location.href = '/indexcultivos.html'; // Redirigir si no hay ID
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/${cultivoId}`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al cargar el cultivo');
         }
+        const cultivo = await response.json();
+
+        // Llenar el formulario con los datos del cultivo
+        document.getElementById('nombreAgricultor').value = cultivo.nombreAgricultor || '';
+        document.getElementById('nombre').value = cultivo.nombre || '';
+        document.getElementById('tipoCultivo').value = cultivo.tipo || '';
+        document.getElementById('ubicacion').value = cultivo.ubicacion || '';
+        document.getElementById('fechaDeCultivo').value = formatearFechaParaInput(cultivo.fechaDeCultivo);
+        document.getElementById('fechaDeCosecha').value = formatearFechaParaInput(cultivo.fechaDeCosecha);
+        document.getElementById('estado').value = cultivo.estado || '';
+        document.getElementById('cantidad').value = cultivo.cantidad || 1;
+        document.getElementById('productoAplicado').value = cultivo.productoAplicado || '';
+        document.getElementById('descripcion').value = cultivo.descripcion || '';
+
+    } catch (error) {
+        console.error('Error al cargar los datos del cultivo:', error);
+        alert(`Error al cargar los datos: ${error.message}`);
+        window.location.href = '/indexcultivos.html'; // Redirigir en caso de error
     }
 });
 
-// Manejar el envío del formulario
-document.getElementById('editarCultivoForm').addEventListener('submit', async (e) => {
+// Manejar el envío del formulario de edición
+editCultivoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    const cultivoData = {
+
+    if (!cultivoId) {
+        alert('Error: No se encontró el ID del cultivo.');
+        return;
+    }
+
+    const cultivoActualizado = {
         nombreAgricultor: document.getElementById('nombreAgricultor').value,
         nombre: document.getElementById('nombre').value,
-        tipoCultivo: document.getElementById('tipoCultivo').value,
+        tipo: document.getElementById('tipoCultivo').value,
         ubicacion: document.getElementById('ubicacion').value,
+        fechaDeCultivo: document.getElementById('fechaDeCultivo').value || null,
+        fechaDeCosecha: document.getElementById('fechaDeCosecha').value || null,
         estado: document.getElementById('estado').value,
+        cantidad: parseInt(document.getElementById('cantidad').value),
         productoAplicado: document.getElementById('productoAplicado').value,
-        fechaDeCultivo: document.getElementById('fechaDeCultivo').value,
-        fechaDeCosecha: document.getElementById('fechaDeCosecha').value
+        descripcion: document.getElementById('descripcion').value
     };
 
-    console.log('Datos a enviar:', cultivoData);
+    console.log('Datos a actualizar:', cultivoActualizado);
 
     try {
         const response = await fetch(`${API_URL}/${cultivoId}`, {
@@ -62,24 +93,20 @@ document.getElementById('editarCultivoForm').addEventListener('submit', async (e
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(cultivoData)
+            body: JSON.stringify(cultivoActualizado)
         });
-
-        console.log('Respuesta del servidor:', response);
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('Error del servidor:', errorData);
+            console.error('Error del servidor al actualizar:', errorData);
             throw new Error(errorData.error || 'Error al actualizar el cultivo');
         }
 
-        const data = await response.json();
-        console.log('Cultivo actualizado:', data);
-        
-        alert('Cultivo actualizado exitosamente');
-        window.location.href = '/indexcultivos.html';
+        alert('Cultivo actualizado exitosamente!');
+        window.location.href = '/indexcultivos.html'; // Redirigir a la lista después de actualizar
+
     } catch (error) {
-        console.error('Error al actualizar el cultivo:', error);
+        console.error('Error completo al actualizar:', error);
         alert(`Error al actualizar el cultivo: ${error.message}`);
     }
 }); 

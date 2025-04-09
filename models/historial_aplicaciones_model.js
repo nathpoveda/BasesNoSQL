@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const historialAplicacionesSchema = new mongoose.Schema({
+const Historial_Aplicaciones_Schema = new mongoose.Schema({
     cultivo: {
         type: String,
         required: true
@@ -42,7 +42,8 @@ const historialAplicacionesSchema = new mongoose.Schema({
         required: true
     }
 }, {
+    collection: 'historial_aplicaciones', // Especificar nombre de colección
     timestamps: true
 });
 
-module.exports = mongoose.model('HistorialAplicaciones', historialAplicacionesSchema); 
+module.exports = mongoose.model('Historial_Aplicaciones', Historial_Aplicaciones_Schema); 

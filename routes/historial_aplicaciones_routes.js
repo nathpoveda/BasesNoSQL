@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const historialAplicacionesController = require('../controller/historialAplicacionesController');
+const historialAplicacionesController = require('../controller/historial_aplicaciones_controller');
 
 // Rutas para el historial de aplicaciones
 router.get('/', historialAplicacionesController.getAllHistorial);

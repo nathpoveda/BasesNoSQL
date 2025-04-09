@@ -16,12 +16,14 @@ cultivoForm.addEventListener('submit', async (e) => {
     const cultivo = {
         nombreAgricultor: document.getElementById('nombreAgricultor').value,
         nombre: document.getElementById('nombre').value,
-        tipoCultivo: document.getElementById('tipoCultivo').value,
+        tipo: document.getElementById('tipoCultivo').value,
         ubicacion: document.getElementById('ubicacion').value,
         estado: document.getElementById('estado').value,
         productoAplicado: document.getElementById('productoAplicado').value,
-        fechaDeCultivo: document.getElementById('fechaDeCultivo').value,
-        fechaDeCosecha: document.getElementById('fechaDeCosecha').value
+        fechaDeCultivo: document.getElementById('fechaDeCultivo').value || null,
+        fechaDeCosecha: document.getElementById('fechaDeCosecha').value || null,
+        cantidad: parseInt(document.getElementById('cantidad').value),
+        descripcion: document.getElementById('descripcion').value
     };
 
     console.log('Datos a enviar:', cultivo);
@@ -94,7 +96,7 @@ function mostrarCultivos(cultivos) {
         tr.innerHTML = `
             <td>${cultivo.nombreAgricultor || ''}</td>
             <td>${cultivo.nombre || ''}</td>
-            <td>${cultivo.tipoCultivo || ''}</td>
+            <td>${cultivo.tipo || ''}</td>
             <td>${cultivo.ubicacion || ''}</td>
             <td><span class="estado-${cultivo.estado ? cultivo.estado.toLowerCase().replace(' ', '-') : ''}">${cultivo.estado || ''}</span></td>
             <td>${cultivo.productoAplicado || ''}</td>
@@ -164,4 +166,6 @@ function resetForm() {
     document.getElementById('productoAplicado').value = '';
     document.getElementById('fechaDeCultivo').value = '';
     document.getElementById('fechaDeCosecha').value = '';
+    document.getElementById('cantidad').value = '1';
+    document.getElementById('descripcion').value = '';
 } 

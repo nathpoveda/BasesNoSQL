@@ -1,9 +1,9 @@
-const HistorialAplicaciones = require('../models/historialAplicacionesModel');
+const Historial_Aplicaciones = require('../models/historial_aplicaciones_model'); // Actualizar referencia
 
 // Obtener todos los registros de historial
 exports.getAllHistorial = async (req, res) => {
     try {
-        const historiales = await HistorialAplicaciones.find();
+        const historiales = await Historial_Aplicaciones.find();
         res.status(200).json(historiales);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -13,7 +13,7 @@ exports.getAllHistorial = async (req, res) => {
 // Obtener un registro específico por ID
 exports.getHistorialById = async (req, res) => {
     try {
-        const historial = await HistorialAplicaciones.findById(req.params.id);
+        const historial = await Historial_Aplicaciones.findById(req.params.id);
         if (!historial) {
             return res.status(404).json({ message: 'Registro no encontrado' });
         }
@@ -26,7 +26,7 @@ exports.getHistorialById = async (req, res) => {
 // Crear un nuevo registro
 exports.createHistorial = async (req, res) => {
     try {
-        const historial = new HistorialAplicaciones(req.body);
+        const historial = new Historial_Aplicaciones(req.body);
         const nuevoHistorial = await historial.save();
         res.status(201).json(nuevoHistorial);
     } catch (error) {
@@ -37,7 +37,7 @@ exports.createHistorial = async (req, res) => {
 // Actualizar un registro existente
 exports.updateHistorial = async (req, res) => {
     try {
-        const historial = await HistorialAplicaciones.findByIdAndUpdate(
+        const historial = await Historial_Aplicaciones.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
@@ -54,7 +54,7 @@ exports.updateHistorial = async (req, res) => {
 // Eliminar un registro
 exports.deleteHistorial = async (req, res) => {
     try {
-        const historial = await HistorialAplicaciones.findByIdAndDelete(req.params.id);
+        const historial = await Historial_Aplicaciones.findByIdAndDelete(req.params.id);
         if (!historial) {
             return res.status(404).json({ message: 'Registro no encontrado' });
         }
